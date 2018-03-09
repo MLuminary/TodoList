@@ -67,13 +67,13 @@ const config = {
         NODE_ENV : isDev ? '"development"' : '"production"'
       }
     }),
-    new HTMLPlugin()
+    new HTMLPlugin(),
   ]
 }
 
 //如果是开发环境
 if (isDev){
-  config.devtool = '#cheap-module-eval-source-map'
+  config.devtool = '#source-map'
   config.devServer = {
     port: 8000,
     host: '0.0.0.0',

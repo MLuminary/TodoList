@@ -1,8 +1,13 @@
+<!--主页面 -->
 <template>
   <div id="app">
+    <!-- 遮罩层 -->
     <div id="cover"></div>
+    <!-- 头部 -->
     <Header></Header>
+    <!-- 主体块 -->
     <todo></todo>
+    <!-- 尾部 -->
     <Footer></Footer>
   </div>
 </template>

@@ -1,5 +1,6 @@
 <template>
     <section class="real-app">
+      <!-- 按回车执行 addTodo -->
       <input
       type="text"
       class="add-input"
@@ -7,46 +8,83 @@
       placeholder="接下来要做什么？"
       @keyup.enter="addTodo"
       >
-      <item :todo="todo"></item>
-      <tabs :filter="filter"></tabs>
+      <!-- 向 item 子组件传递 todo -->
+      <item 
+        :todo="todo"
+        v-for="todo in filteredTodos"
+        :key="todo.id"
+        @del="deleteTodo"
+      />
+      <!-- 向 tabs 组件传递 filter 和 todos -->
+      <tabs
+       :filter="filter"
+       :todos="todos"
+       @toggle="toggleFilter"
+       @clearAll="clearAllCompleted"
+      />
     </section>
 </template>
 
 
 <script>
-  import Item from './item.vue'
-  import Tabs from './tabs.vue'
+import Item from "./item.vue";
+import Tabs from "./tabs.vue";
 
-  export default {
-    data(){
-      return {
-        todo : {
-          id : 0,
-          content : 'this is todo',
-          completed : false
-        },
-        filter: 'all'
-      }
-    },
-    methods:{
-      addTodo(){
+let id = 0;
 
+export default {
+  data() {
+    return {
+      todos: [],
+      filter: "all"
+    };
+  },
+  components: {
+    Item,
+    Tabs
+  },
+  computed: {
+    filteredTodos() {
+      //如果用户选择的为 all 就返回全部 todos 里面的内容
+      if (this.filter === "all") {
+        return this.todos;
       }
+      const completed = this.filter === "completed";
+      return this.todos.filter(todo => completed === todo.completed);
+    }
+  },
+  methods: {
+    //向 todos 中添加一个对象 并清空输入框
+    addTodo(e) {
+      if(e.target.value === "") return false;
+      this.todos.unshift({
+        id: id++,
+        content: e.target.value.trim(),
+        completed: false
+      });
+      e.target.value = "";
     },
-    components: {
-      Item,
-      Tabs
+    deleteTodo(id) {
+      this.todos.splice(this.todos.findIndex(todo => todo.id === id), 1);
+    },
+    toggleFilter(state) {
+      this.filter = state;
+    },
+    clearAllCompleted() {
+      this.todos = this.todos.filter(todo => !todo.completed);
     }
   }
+};
 </script>
 
 <style lang="stylus" scoped>
-.real-app{
-  width 600px
-  margin 0 auto
-  box-shadow 0 0 5px #666
+.real-app {
+  width: 600px;
+  margin: 0 auto;
+  box-shadow: 0 0 5px #666;
 }
-.add-input{
+
+.add-input {
   position: relative;
   margin: 0;
   width: 100%;
@@ -64,7 +102,7 @@
   font-smoothing: antialiased;
   padding: 16px 16px 16px 60px;
   border: none;
-  box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
+  box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
 }
 </style>
 

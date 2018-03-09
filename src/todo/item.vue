@@ -2,8 +2,8 @@
   <div :class="['todo-item',todo.completed ? 'completed':'']">
     <input
      type="checkbox"
-     class="toggle"
-     v-model="todo.completed"
+     class="toggle" 
+     v-model="todo.completed" 
       >
       <label>{{todo.content}}</label>
       <button class="destroy" @click="deleteTodo"></button>
@@ -13,14 +13,15 @@
 <script>
   export default {
     props : { 
-      todo:{
-        type:Object,
-        required:true
+      //必传且是对象
+      todo : {
+        type : Object,
+        required : true
       }
     },
     methods: {
-      deleteTo(){
-
+      deleteTodo(){
+        this.$emit('del',this.todo.id);
       }
     }
   }
