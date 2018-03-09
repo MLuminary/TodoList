@@ -2,6 +2,7 @@
 const path = require('path')
 const HTMLPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
+
 //获取package.json 中定义的 env NODE.ENV的变量
 const isDev = process.env.NODE.ENV === 'development'
 
